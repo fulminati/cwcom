@@ -1,0 +1,33 @@
+
+
+var host = "morsecode.dyndns.org";
+var c_port = 7890;
+var dgram = require("dgram");
+var client = dgram.createSocket("udp4");
+
+
+
+var message = new Buffer("3031323334353637", "hex");
+
+client.on("message", function(msg, rinfo) {
+  console.log("recieved: " + msg.toString("hex"));
+  send()	
+});
+
+client.on("err", function(err) {
+  console.log("client error: \n" + err.stack);
+  console.close();
+});
+
+Buffer.from([0x04, 0x00, 0x96, 0x00])
+client.on("close", function() {
+  console.log("closed.");
+});
+
+
+send(Buffer.from([0x04, 0x00, 0x96, 0x00]), host, c_port);
+function send(message, host, port) {
+  client.send(message, 0, message.length, port, host, function(err, bytes) {
+    console.log("sent.");
+  });
+}

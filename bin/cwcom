@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+/*!
+ * cwcom
+ * Copyright(c) 2016-2017 Javanile.org
+ * MIT Licensed
+ */
+
+"use strict";
+
+var fs = require("fs"),
+    path = require("path"),
+    local = path.join(process.cwd(), "node_modules/ndev-framework/src/cli.js"),
+    arg = process.argv.slice(2),
+    cli = null;
+
+if (!fs.existsSync(local)) {
+    cli = require("../src/cli");
+} else {
+    cli = require(local);
+}
+
+cli.run(arg, function (output) {
+    console.log(output);
+});
